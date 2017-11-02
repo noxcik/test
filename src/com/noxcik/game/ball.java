@@ -26,6 +26,7 @@ public class ball {
     private static boolean starting = false;    
     private static float rotation_b = 0;
     
+    
     public static float update(float rotation_b){
         if(starting){
             if(x_b < 0){

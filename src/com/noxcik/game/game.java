@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.noxcik.game;
 
 import java.awt.Color;
@@ -26,7 +21,7 @@ import com.noxcik.utils.time;
  * @author noxcik
  */
 public class game implements Runnable  {//
-    Scanner s = new Scanner(System.in);
+    //Scanner s = new Scanner(System.in);
     
     
     public static final int WIDTH = 800;
@@ -42,14 +37,14 @@ public class game implements Runnable  {//
     public static float delta = 0;
     public static final String ATLAS_FILE_NAME = "img.png";
     
-    public static int x = 0;
+    public static int x = (int) (Math.random() * (WIDTH - 40) + 20);
     public static int y = HEIGHT - PLAYER_H;
     public static int speed = 10;
     public static int x_b = 0;
     public static int y_b = 0;
     
-    public float rotation_b = s.nextFloat();
-    public static float speed_b = 5f;
+    public float rotation_b = (float) (Math.random() * 45.0f + randChar());
+    public static int speed_b = 5;
     public static int radius_b = 30;
     
     private boolean running;
@@ -132,24 +127,27 @@ public class game implements Runnable  {//
     }
     public static void lvlEnd(){
         x_b = 30;
-        y_b = 50;//реализация
+        y_b = 50;
+        speed_b -= 3;//реализовать speedDown();
     
     }
-    Bricks lvl1 = new Bricks(110, 50, 4);
+    Bricks lvl = new Bricks(110, 50, 1);
     private  void update(){
         platform.update(input);
         rotation_b = ball.update(rotation_b);
-        rotation_b = lvl1.update(rotation_b);
-        if(lvl1.getLvlEnd()) lvl1 = new Bricks(30, 100, 30);
+        rotation_b = lvl.update(rotation_b);
+        if(lvl.getLvlEnd()){
+            speed_b += 3;  // реализовать speedUp()
+            lvl = new Bricks(30, 100, 2);
+        }
     }
     private  void render(){
         Display.clear();
-        
-        //delta += 0.02;
-        
-        lvl1.render(graphics);
-        graphics.setColor(Color.red);
+
         ((Graphics2D)graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        lvl.render(graphics);
+        
+        graphics.setColor(Color.red);
         graphics.fillRect(x, y - 2, PLAYER_W, PLAYER_H);
         graphics.setColor(Color.black);
         if(ball.getStarting()) graphics.fillOval((int) (x_b += Math.cos(Math.toRadians(rotation_b)) * speed_b), (int) (y_b += Math.sin(Math.toRadians(rotation_b)) * speed_b), radius_b, radius_b);
@@ -160,5 +158,9 @@ public class game implements Runnable  {//
     }
     private void cleanUp(){
         Display.destroy();
+    }
+    private int randChar(){
+        if(Math.random() < 0.5) return 0;
+        else return 90;
     }
 }
