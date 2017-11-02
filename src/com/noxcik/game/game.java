@@ -22,27 +22,27 @@ import com.noxcik.utils.time;
  */
 public class game implements Runnable  {//
     //Scanner s = new Scanner(System.in);
-    
-    
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
-    public static final String TITLE = "Tanks";
+    public static final String TITLE = "arcID";
     public static final int CLEAR_COLOR= 0xfc00ccaa;
     public static final int MEM_BUFFEERS = 2;
     public static final float UPDATE_RATE = 60.0f;
-    public static final int PLAYER_H = 10;
-    public static final int PLAYER_W = 150;
     public static final float UPDATE_INTERVAL = time.SECOND / UPDATE_RATE;
     public static final long IDLE_TIME = 1;
-    public static float delta = 0;
-    public static final String ATLAS_FILE_NAME = "img.png";
+    //public static float delta = 0;
+    //public static final String ATLAS_FILE_NAME = "img.png";
     
-    public static int x = (int) (Math.random() * (WIDTH - 40) + 20);
+    public static final int PLAYER_H = 10;
+    public static final int PLAYER_W = 150;     
+    public static int x = (int) (Math.random() * (WIDTH - PLAYER_W - 20) + 20);
     public static int y = HEIGHT - PLAYER_H;
     public static int speed = 10;
+   
     public static int x_b = 0;
     public static int y_b = 0;
-    
+    public static int speed_b_min= 0;
+    public static int speed_b_max = 0; 
     public float rotation_b = (float) (Math.random() * 45.0f + randChar());
     public static int speed_b = 5;
     public static int radius_b = 30;
@@ -50,7 +50,8 @@ public class game implements Runnable  {//
     private boolean running;
     private Thread gameThread;
     private Graphics2D graphics;
-    public Input input;
+    public Input input; 
+    
     
     public game(){
         running = false;
@@ -128,8 +129,8 @@ public class game implements Runnable  {//
     public static void lvlEnd(){
         x_b = 30;
         y_b = 50;
-        speed_b -= 3;//реализовать speedDown();
-    
+        speed_b -= speedMove();
+
     }
     Bricks lvl = new Bricks(110, 50, 1);
     private  void update(){
@@ -137,7 +138,7 @@ public class game implements Runnable  {//
         rotation_b = ball.update(rotation_b);
         rotation_b = lvl.update(rotation_b);
         if(lvl.getLvlEnd()){
-            speed_b += 3;  // реализовать speedUp()
+            speed_b += speedMove();
             lvl = new Bricks(30, 100, 2);
         }
     }
@@ -162,5 +163,10 @@ public class game implements Runnable  {//
     private int randChar(){
         if(Math.random() < 0.5) return 0;
         else return 90;
+    }
+    private static int speedMove(){
+        if(speed_b - 3 > speed_b_min && speed_b + 3 < speed_b_max)
+            return 3;
+        else return 0;
     }
 }
