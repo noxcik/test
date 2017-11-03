@@ -8,6 +8,8 @@ package com.noxcik.display;
 import com.noxcik.IO.Input;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -16,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.Arrays;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  *
@@ -53,7 +56,7 @@ public abstract class Display{
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
-        
+
         buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         bufferData = ((DataBufferInt)buffer.getRaster().getDataBuffer()).getData();
         bufferGraphics = buffer.getGraphics();

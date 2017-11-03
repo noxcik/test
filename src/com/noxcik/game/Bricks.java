@@ -31,12 +31,12 @@ public class Bricks {
 
     }
 
-    public float update(float rotation_b){
+    public double update(double rotation_b){
         int cEmpty = 0;
         for(int i = 0; i < count; i++){
 
-            int y = ball.getY();
-            int x = ball.getX();
+            double y = ball.getY();
+            double x = ball.getX();
             int radius = ball.getRadius();
             if(M[i] == null) cEmpty++;
             if(M[i] != null && y < M[i].getY() + height && y + radius > M[i].getY() && x + radius/2 < M[i].getX() + width && x + radius/2 > M[i].getX()){

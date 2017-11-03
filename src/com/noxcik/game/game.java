@@ -1,11 +1,13 @@
 package com.noxcik.game;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.swing.JPanel;
 //...
 import java.util.Scanner;
 //...
@@ -13,6 +15,7 @@ import java.util.Scanner;
 import com.noxcik.IO.Input;
 import com.noxcik.display.Display;
 import com.noxcik.utils.time;
+import com.sun.java.swing.plaf.windows.resources.windows;
 
 
 
@@ -37,14 +40,15 @@ public class game implements Runnable  {//
     public static final int PLAYER_W = 150;
     public static int x = (int) (Math.random() * (WIDTH - PLAYER_W - 20) + 20);
     public static int y = HEIGHT - PLAYER_H;
+    public static int level = 0;
     public static int speed = 10;
 
-    public static int x_b = 0;
-    public static int y_b = 0;
+    public static double x_b = 0;
+    public static double y_b = 0;
     public static int speed_b_min= 0;
     public static int speed_b_max = 0;
-    public float rotation_b = (float) (Math.random() * 45.0f + randChar());
-    public static int speed_b = 5;
+    public double rotation_b = 87;// (double) (Math.random() * 45.0f + randChar());
+    public static int speed_b = 20;
     public static int radius_b = 30;
 
     private boolean running;
@@ -132,30 +136,35 @@ public class game implements Runnable  {//
         speed_b -= speedMove();
 
     }
-    Bricks lvl = new Bricks(110, 50, 1);
+    Bricks lvl = getLvl(level);
     private  void update(){
         platform.update(input);
         rotation_b = ball.update(rotation_b);
         rotation_b = lvl.update(rotation_b);
         if(lvl.getLvlEnd()){
             speed_b += speedMove();
-            lvl = new Bricks(30, 100, 2);
+            level++;
+            lvl = getLvl(level);
         }
+    }
+    public Bricks getLvl(int lvl){
+        if(lvl == 0) return new Bricks(200, 300, 35);
+        if(lvl == 1) return new Bricks(200, 100, 10);
+        if(lvl == 2) return new Bricks(100, 100, 20);
+        else return null;
     }
     private  void render(){
         Display.clear();
-
         ((Graphics2D)graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         lvl.render(graphics);
 
+        ball.render(graphics);
         graphics.setColor(Color.red);
         graphics.fillRect(x, y - 2, PLAYER_W, PLAYER_H);
         graphics.setColor(Color.black);
         if(ball.getStarting()) graphics.fillOval((int) (x_b += Math.cos(Math.toRadians(rotation_b)) * speed_b), (int) (y_b += Math.sin(Math.toRadians(rotation_b)) * speed_b), radius_b, radius_b);
         else graphics.fillOval((int) (x_b = x + PLAYER_W/2 - radius_b/2), (int) (y_b = y - radius_b), radius_b, radius_b);
         Display.swapBuffers();
-
-
     }
     private void cleanUp(){
         Display.destroy();
