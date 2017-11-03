@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 //...
 import java.util.Scanner;
-//... 
+//...
 
 import com.noxcik.IO.Input;
 import com.noxcik.display.Display;
@@ -32,27 +32,27 @@ public class game implements Runnable  {//
     public static final long IDLE_TIME = 1;
     //public static float delta = 0;
     //public static final String ATLAS_FILE_NAME = "img.png";
-    
+
     public static final int PLAYER_H = 10;
-    public static final int PLAYER_W = 150;     
+    public static final int PLAYER_W = 150;
     public static int x = (int) (Math.random() * (WIDTH - PLAYER_W - 20) + 20);
     public static int y = HEIGHT - PLAYER_H;
     public static int speed = 10;
-   
+
     public static int x_b = 0;
     public static int y_b = 0;
     public static int speed_b_min= 0;
-    public static int speed_b_max = 0; 
+    public static int speed_b_max = 0;
     public float rotation_b = (float) (Math.random() * 45.0f + randChar());
     public static int speed_b = 5;
     public static int radius_b = 30;
-    
+
     private boolean running;
     private Thread gameThread;
     private Graphics2D graphics;
-    public Input input; 
-    
-    
+    public Input input;
+
+
     public game(){
         running = false;
         Display.create(WIDTH, HEIGHT, TITLE, CLEAR_COLOR, MEM_BUFFEERS);
@@ -60,8 +60,8 @@ public class game implements Runnable  {//
         input = new Input();
         Display.addInputListener(input);
     }
-    
-    
+
+
     public void run() {
         float delt= 0;
         int fps = 0;
@@ -73,9 +73,9 @@ public class game implements Runnable  {//
             long now = time.get();
             long elapsedTime = now - lastTime;
             lastTime = now;
-            
+
             count += elapsedTime;
-            
+
             boolean render = false;
             delt += (elapsedTime / UPDATE_INTERVAL);
             while(delt > 1){
@@ -104,7 +104,7 @@ public class game implements Runnable  {//
                 upd1 = 0;
                 count = 0;
             }
-        
+
         }
     }
     public synchronized void start(){
@@ -124,7 +124,7 @@ public class game implements Runnable  {//
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        
+
     }
     public static void lvlEnd(){
         x_b = 30;
@@ -147,15 +147,15 @@ public class game implements Runnable  {//
 
         ((Graphics2D)graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         lvl.render(graphics);
-        
+
         graphics.setColor(Color.red);
         graphics.fillRect(x, y - 2, PLAYER_W, PLAYER_H);
         graphics.setColor(Color.black);
         if(ball.getStarting()) graphics.fillOval((int) (x_b += Math.cos(Math.toRadians(rotation_b)) * speed_b), (int) (y_b += Math.sin(Math.toRadians(rotation_b)) * speed_b), radius_b, radius_b);
         else graphics.fillOval((int) (x_b = x + PLAYER_W/2 - radius_b/2), (int) (y_b = y - radius_b), radius_b, radius_b);
         Display.swapBuffers();
-        
-    
+
+
     }
     private void cleanUp(){
         Display.destroy();

@@ -19,7 +19,7 @@ public class Bricks {
     private final int re = 8;
     private static boolean ending = false;
     Brick[] M = null;
-    
+
     Bricks(int startX, int startY, int count){
         ending = false;
         this.count = count;
@@ -30,16 +30,16 @@ public class Bricks {
 
 
     }
-    
+
     public float update(float rotation_b){
         int cEmpty = 0;
         for(int i = 0; i < count; i++){
-            
+
             int y = ball.getY();
             int x = ball.getX();
             int radius = ball.getRadius();
             if(M[i] == null) cEmpty++;
-            if(M[i] != null && y < M[i].getY() + height && y + radius > M[i].getY() && x + radius/2 < M[i].getX() + width && x + radius/2 > M[i].getX()){ 
+            if(M[i] != null && y < M[i].getY() + height && y + radius > M[i].getY() && x + radius/2 < M[i].getX() + width && x + radius/2 > M[i].getX()){
                 rotation_b = -rotation_b;
                 M[i] = null;
             }
@@ -47,31 +47,31 @@ public class Bricks {
                 rotation_b += 180 - rotation_b * 2;
                 M[i] = null;
             }
-            
-            
-            
-        }  
+
+
+
+        }
         if(cEmpty == count) ending = true;
         return rotation_b;
     }
 
-    
+
     public void render(Graphics2D graphics){
-        
+
         for(int i = 0; i < count; i++){
             if(M[i] != null){
             graphics.setColor(Color.blue);
             graphics.fillRect(M[i].getX(), M[i].getY(),width, height);
             }
-        }    
-    
+        }
+
     }
-    
+
     public int getCount() {
         return count;
     }
     public boolean getLvlEnd(){
         return ending;
     }
-    
+
 }
